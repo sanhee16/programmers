@@ -1,0 +1,48 @@
+#include <string>
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+vector<int> solution(vector<int> heights) {
+    vector<int> answer;
+    stack<pair<int, int>> tower;
+    vector<pair<int, int>> tower_pair;
+    answer.assign(heights.size(), 0);
+
+    for (int i = 0; i < heights.size(); i++) {
+        tower_pair.push_back(pair<int, int>(heights[i], i + 1));
+    }
+    int order = heights.size()-1;
+    while (true) {
+        if (order == -1) {
+            break;
+        }
+        if (tower.empty() == true) {
+            tower.push(tower_pair[order]);
+            order--;
+        }
+        else {
+            while (true) {
+                if (tower.empty() == true) {
+                    tower.push(tower_pair[order]);
+                    order--;
+                    break;
+                }
+                if (tower.top().first < heights[order]) {
+                    answer[tower.top().second-1] = order+1;
+                    tower.pop();
+                    continue;
+                }
+                else{
+                    tower.push(tower_pair[order]);
+                    order--;
+                    break;
+                }
+            }
+        }
+    }
+
+    return answer;
+}
