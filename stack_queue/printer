@@ -1,0 +1,49 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <deque>
+#include <utility>
+#include <iostream>
+
+using namespace std;
+
+int solution(vector<int> priorities, int location) {
+    int answer = 0;
+    
+    deque<pair<int,int>> waiting_printer;
+    for(int i=0;i<priorities.size();i++){
+        waiting_printer.push_back(pair<int,int>(priorities[i],i));
+    }
+    int find = 0;
+    int order = 1;
+    while(true){
+        if(waiting_printer.empty()==true){
+            answer = priorities.size();
+            break;
+        }
+        find=0;
+        deque<pair<int,int>>::iterator iter = waiting_printer.begin();
+        for(int i=0;i<waiting_printer.size();i++){
+            if(waiting_printer.front().first < (*(iter)).first){
+                find=1;
+                break;
+            }else{
+                iter++;
+            }
+        }
+        if(find==0){
+            if(waiting_printer.front().second == location){
+                answer=order;
+                break;
+            }
+            waiting_printer.pop_front();
+            order++;
+        }else{
+            waiting_printer.push_back(waiting_printer.front());
+            waiting_printer.pop_front();
+        }
+    }
+    
+    
+    return answer;
+}
