@@ -1,3 +1,8 @@
+/*
+programmers stack/queue
+#2 problem using c++
+https://programmers.co.kr/learn/courses/30/lessons/42583#
+*/
 #include <iostream>
 #include <vector>
 #include <queue>
