@@ -1,0 +1,41 @@
+/*
+
+*/
+#include <string>
+#include <vector>
+#include <iostream>
+#include <queue>
+
+using namespace std;
+
+vector<int> solution(vector<int> progresses, vector<int> speeds) {
+    vector<int> answer;
+    queue<int> finish_time;
+    
+    for(int i=0;i<progresses.size();i++){
+        finish_time.push(int((100-progresses[i])/speeds[i]));
+    }
+    while(true){
+        if(finish_time.empty()==true){
+            break;
+        }
+        int finish_progresses=1;
+        int front_time = finish_time.front();
+        finish_time.pop();
+        while(true){
+            if(finish_time.empty()==true){
+                break;
+            }
+            if(front_time >= finish_time.front()){
+                finish_progresses+=1;
+                finish_time.pop();
+            }
+            else{
+                break;
+            }
+        }
+        answer.push_back(finish_progresses);
+    }
+    
+    return answer;
+}
