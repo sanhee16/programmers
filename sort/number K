@@ -1,0 +1,39 @@
+  
+/*
+programmers sort
+#1 problem using c++
+also using <algorithm> headerfile
+https://programmers.co.kr/learn/courses/30/lessons/42748?language=cpp
+*/
+
+#include <string>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+
+using namespace std;
+
+vector<int> solution(vector<int> array, vector< vector<int> > commands) {
+    vector<int> answer;
+
+    vector<int> arr;
+    for(int order=0; order<commands.size(); order++){
+        arr = commands[order];
+        int i=arr[0];
+        int j=arr[1];
+        int k=arr[2];
+        vector<int> new_command;
+        
+        for(int cut = i-1;cut < j ;cut++){
+            new_command.push_back(array[cut]);
+        }
+        sort(new_command.begin(),new_command.end());
+        answer.push_back(new_command[k-1]);
+        
+      
+        
+    }
+    
+        
+    return answer;
+}
