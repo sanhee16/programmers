@@ -1,0 +1,51 @@
+#include <string>
+#include <vector>
+#include <queue>
+#include <algorithm>
+#include <iostream>
+#include <math.h>
+using namespace std;
+
+int solution(vector<int> numbers, int target) {
+    int answer = 0;
+    queue<int> q;
+    queue<int> before_q;
+    q.push(numbers[0]);
+    before_q.push(0);
+    
+    int nn=0;
+    int num[2] = {0,0};
+    int before_num = 0;
+    int i=0;
+    int loop=1;
+    
+    while(true){
+        if(q.empty()==true)
+            break;
+        if(pow(2,i)==loop){
+            i=i+1;
+        }
+        loop = loop+1;
+        nn = q.front();
+        before_num = before_q.front();
+        q.pop();
+        before_q.pop();
+        
+        num[0] = 0-nn;
+        num[1] = nn;
+
+        for(int j=0;j<2;j++){
+            int next = 0;
+            next = before_num + num[j];
+            if(i < numbers.size()){
+                q.push(numbers[i]);
+                before_q.push(next);
+            }
+            if(i==numbers.size() && next == target){
+                answer = answer+1;
+            }
+        }
+    }
+    
+    return answer;
+}
