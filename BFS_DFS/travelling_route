@@ -1,0 +1,127 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include <stack>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+vector<string> solution(vector<vector<string>> tickets) {
+    vector<string> answer;
+    vector<int> e(tickets.size());
+    vector<int> vis(tickets.size());
+    vector<pair<string,int>> small;
+    
+    vector<int> parent(tickets.size());
+    vector<int> my_child(tickets.size());
+    vector<int> my_child_went(tickets.size());
+    vector<vector<int>> graph;
+    vector<pair<string,int>> start;
+    
+    for(int i=0;i<tickets.size();i++){
+        graph.push_back(e);
+        for(int j=0;j<tickets.size();j++){
+            graph[i][j]=0;
+        }
+    }
+    for(int i=0;i<tickets.size();i++){
+        for(int j=0;j<tickets.size();j++){
+            if((tickets[i][1]==tickets[j][0]) && (i!=j)){
+                graph[i][j]=1;
+                my_child[i]++;
+            }
+        }
+    }
+    
+    for(int i=0;i<tickets.size();i++){
+        if(tickets[i][0]=="ICN"){
+            start.push_back(make_pair(tickets[i][1],i));
+        }
+    }
+    sort(start.begin(),start.end());
+    reverse(start.begin(),start.end());
+    vector<int> store;
+    vector<int> st;
+    while(true){
+        int store_num=0;
+        if(start.empty()==true)
+            break;
+        int end=0;
+        for(int i=0;i<tickets.size();i++){
+            if(vis[i]==0){
+                end=1;
+                break;
+            }
+        }
+        if(end==0)
+            break;
+        
+        for(int i=0;i<tickets.size();i++){
+            vis[i]=0;
+        }
+        
+        int start_num = start.back().second;
+        st.push_back(start_num);
+        store.push_back(start_num);
+        store_num++;
+        start.pop_back();
+        
+        answer.clear();
+        answer.push_back("ICN");
+        
+        while(true){
+            if(st.empty()==true)
+                break;
+            int now_idx = st.back();
+            st.pop_back();
+            vis[now_idx]=1;
+            answer.push_back(tickets[now_idx][1]);
+            small.clear();
+            int no_more = 0;
+            for(int i=0;i<tickets.size();i++){
+                if(graph[now_idx][i]==1 && vis[i]==0){
+                    small.push_back(make_pair(tickets[i][1],i));
+                    no_more=1;
+                }
+            }
+            if(no_more==0){
+                int end1 = 0;
+                for(int i=0;i<tickets.size();i++){
+                    if(vis[i]==0){
+                        end1=1;
+                        break;
+                    }
+                }
+                if(end1==0){
+                    break;
+                }
+                else{
+                    int new_idx = st.back();
+                    for(int era = store_num-1;;era--){
+                        if(store[era] == new_idx){
+                            break;
+                        }
+                        int a = store.back();
+                        store.pop_back();
+                        answer.pop_back();
+                        vis[a]=0;
+                        store_num--;
+                    }
+                    continue;
+                }
+            }
+            else{
+                sort(small.begin(),small.end());
+                reverse(small.begin(),small.end());
+                for(vector<pair<string,int> >::iterator iter_small=small.begin(); iter_small<small.end(); iter_small++){
+                    st.push_back((*iter_small).second);
+                    store.push_back((*iter_small).second);        
+                    store_num++;
+                }
+            }
+        }
+    }
+    
+    return answer;
+}
