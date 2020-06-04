@@ -1,0 +1,10 @@
+SELECT COUNT(DISTINCT NAME)
+FROM ANIMAL_INS
+
+/*
+null 포함되는 경우 : COUNT(*)
+null 포함되지 않는 경우: COUNT(ColumnName)
+
+중복 제거
+COUNT(DISTINCT ColumnName)
+*/
